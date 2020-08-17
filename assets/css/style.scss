@@ -7,6 +7,9 @@ $cyan-color: #62dafc;
 .mid-white {
   color: #f4f4f4;
 }
+.cyan-color {
+  color: $cyan-color;
+}
 
 html {
   scroll-behavior: smooth;
@@ -15,6 +18,14 @@ html {
 body {
   background-color: $base-color;
   font-family: "Google Sans", sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 nav {
@@ -36,9 +47,10 @@ nav {
     }
   }
 }
-
-h1 {
-  color: $cyan-color;
+main {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 .banner-text {
@@ -77,11 +89,18 @@ h1 {
 }
 
 .card {
+  .fix-img {
+    width: 136px;
+    height: 100px;
+  }
   background-color: $card-color;
   border-radius: 10px;
   color: $cyan-color;
-  box-shadow: 0px 3px 20px 2px #89d2f7;
   cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 3px 20px 2px #89d2f7;
+  }
 }
 
 .page-footer {

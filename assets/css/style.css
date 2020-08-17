@@ -3,6 +3,10 @@
   color: #f4f4f4;
 }
 
+.cyan-color {
+  color: #62dafc;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -10,6 +14,14 @@ html {
 body {
   background-color: #37474f;
   font-family: "Google Sans", sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 nav {
@@ -32,8 +44,10 @@ nav .btn-flat:hover {
   background-color: #62dbfc1e !important;
 }
 
-h1 {
-  color: #62dafc;
+main {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 .banner-text {
@@ -78,9 +92,17 @@ h1 {
   background-color: #263238;
   border-radius: 10px;
   color: #62dafc;
+  cursor: pointer;
+}
+
+.card .fix-img {
+  width: 136px;
+  height: 100px;
+}
+
+.card:hover {
   -webkit-box-shadow: 0px 3px 20px 2px #89d2f7;
           box-shadow: 0px 3px 20px 2px #89d2f7;
-  cursor: pointer;
 }
 
 .page-footer {
