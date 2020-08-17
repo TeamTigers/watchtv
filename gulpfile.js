@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const terser = require("gulp-terser");
-const deploy = require("gulp-gh-pages");
+const imagemin = require("gulp-imagemin");
 const { src, parallel, series } = require("gulp");
 const rename = require("gulp-rename");
 const browserSync = require("browser-sync").create();
@@ -36,19 +36,28 @@ function minifyJS() {
     .pipe(gulp.dest("dist/assets/js"));
 }
 
-// push build to gh-pages
-function ghDeploy() {
-  return gulp.src("dist/**/**/*").pipe(deploy());
+// minified image
+function compressedImg() {
+  return gulp
+    .src("src/assets/img/*")
+    .pipe(imagemin())
+    .pipe(gulp.dest("dist/assets/img"));
 }
-
-exports.ghDeploy = ghDeploy;
 
 function watch() {
   gulp.watch(
-    ["src/*.html", "src/assets/sass/*.scss", "src/assets/js/*.js"],
-    { interval: 500 },
-    parallel(copyHTML, style, minifyJS)
+    [
+      "src/*.html",
+      "src/assets/sass/*.scss",
+      "src/assets/js/*.js",
+      "src/assets/img/*",
+    ],
+    { interval: 100 },
+    parallel(copyHTML, style, minifyJS, compressedImg)
   );
 }
 
-exports.default = series(parallel(copyHTML, style, minifyJS), watch);
+exports.default = series(
+  parallel(copyHTML, style, minifyJS, compressedImg),
+  watch
+);
