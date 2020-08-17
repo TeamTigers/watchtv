@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+.mid-white {
+  color: #f4f4f4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #37474f;
+  font-family: "Google Sans", sans-serif;
+}
+
+nav {
+  padding: 0em 2em;
+  background: #37474f;
+}
+
+nav .brand-logo {
+  font-family: "Righteous", cursive;
+  color: #62dafc;
+}
+
+nav .btn-flat {
+  color: white !important;
+  text-transform: none;
+  border-radius: 7px;
+}
+
+nav .btn-flat:hover {
+  background-color: #62dbfc1e !important;
+}
+
+h1 {
+  color: #62dafc;
+}
+
+.banner-text {
+  margin-top: 4em;
+}
+
+.btn {
+  color: #37474f !important;
+  background-color: #62dafc !important;
+  border-radius: 7px;
+  text-transform: none;
+  font-weight: bold;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.btn:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.share-btn {
+  height: 3rem;
+  width: 40%;
+  line-height: 3;
+  background-color: #37474f !important;
+  color: #62dafc !important;
+  border: 1px solid #62dafc;
+}
+
+.share-btn:hover {
+  background-color: #62dafc !important;
+  color: #37474f !important;
+}
+
+.modal {
+  background: #37474f;
+  border-radius: 10px;
+}
+
+.card {
+  background-color: #263238;
+  border-radius: 10px;
+  color: #62dafc;
+  -webkit-box-shadow: 0px 3px 20px 2px #89d2f7;
+          box-shadow: 0px 3px 20px 2px #89d2f7;
+  cursor: pointer;
+}
+
+.page-footer {
+  background: #263238;
+}
+
+@media screen and (max-width: 992px) {
+  nav {
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .banner-text {
+    margin-top: 1em;
+  }
+}
+/*# sourceMappingURL=style.css.map */
