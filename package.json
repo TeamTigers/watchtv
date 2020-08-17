@@ -1,0 +1,34 @@
+{
+  "name": "watchtv",
+  "version": "1.0.0",
+  "description": "Watch tv from your browser with less buffering",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "gulp": "^4.0.2",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-terser": "^1.3.2"
+  },
+  "scripts": {
+    "test": "npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamTigers/watchtv.git"
+  },
+  "keywords": [
+    "tv",
+    "node",
+    "gulp",
+    "watchtv"
+  ],
+  "author": "zubayer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TeamTigers/watchtv/issues"
+  },
+  "homepage": "https://github.com/TeamTigers/watchtv#readme"
+}
