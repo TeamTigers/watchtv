@@ -1,5 +1,6 @@
 $(function () {
   let categoryName = window.localStorage.getItem("categoryName");
+  $("#channelNameID").html(categoryName);
   let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
   apiURL += categoryName;
   $.get(apiURL, function () {})
@@ -7,7 +8,6 @@ $(function () {
       let str = "";
       res.forEach((el) => {
         let imgUrl = el.logo === "null" ? "assets/img/img.jpg" : el.logo;
-        console.log(imgUrl);
         str += "<div class='col s6 m4 l3'>";
         str += "<div class='card commonClsList' id='" + el.url + "'>";
         str += "<div class='card-content center'>";

@@ -1,5 +1,4 @@
 $(function(){
-  window.localStorage.clear();
 
   // Set Category List 
   let data = [
