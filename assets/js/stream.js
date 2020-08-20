@@ -1,8 +1,12 @@
 $(function () {
-  let channelURL = window.localStorage.getItem("channelURL");
+  let channelData = window.localStorage.getItem("channelData");
+  channelData = JSON.parse(channelData);
+  // set last 10 data
+  setLast10Data(channelData);
+  // Player
   let player = new Clappr.Player({
     parentId: "#player",
-    source: channelURL,
+    source: channelData.url,
     autoPlay: true,
     poster: "assets/img/preview.jpg",
     plugins: [DashShakaPlayback],
@@ -10,40 +14,68 @@ $(function () {
     width: "90vw",
   });
 
-  let categoryName = window.localStorage.getItem("categoryName");
-  let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
-  apiURL += categoryName;
-  $.get(apiURL, function () {})
-    .done((res) => {
-      let str = "";
-      res.forEach((el) => {
-        let imgUrl = el.logo === "null" ? "assets/img/img.jpg" : el.logo;
-        str += "<div class='col s6 m4 l3'>";
-        str += "<div class='card commonClsList' id='" + el.url + "'>";
-        str += "<div class='card-content center'>";
-        str +=
-          "<img src='" +
-          imgUrl +
-          "' alt='channel' style='width: 136px; height: 100px'";
-        str += "class='responsive-img fixImg'/>";
-        str += "<p class='flow-text truncate'>" + el.name + "</p>";
-        str += "</div></div></div>";
-      });
-      $("#streamChannelListID").html(str);
-      
-      // set channel Data
-      $(".commonClsList").click(function () {
-        let id = this.id;
-        window.localStorage.setItem("channelURL", id);
-        window.location.replace("stream.html");
-      });
-    })
-    .fail(function () {
-      showToast("Something went wrong!", "red darken-3");
-    });
+  // get Related channels
+  getRelatedChannels();
 
   // Go Back location
   window.onpopstate = function () {
     history.go(history.length - 1);
   };
 });
+
+function getRelatedChannels() {
+  let categoryName = window.localStorage.getItem("categoryName");
+  let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
+  apiURL += categoryName;
+  $.get(apiURL, function () {})
+    .done((res) => {
+      let str = "";
+      for (let i = 0; i < res.length; i++) {
+        let imgUrl = res[i].logo === "null" ? "assets/img/img.jpg" : res[i].logo;
+        str += "<div class='col s6 m4 l3'>";
+        str += "<div class='card commonClsList' id='" + i + "'>";
+        str += "<div class='card-content center'>";
+        str +=
+          "<img src='" +
+          imgUrl +
+          "' alt='channel' style='width: 136px; height: 100px'";
+        str += "class='responsive-img fixImg'/>";
+        str += "<p class='flow-text truncate'>" + res[i].name + "</p>";
+        str += "</div></div></div>";
+      }
+      $("#streamChannelListID").html(str);
+
+      // set channel Data
+      $(".commonClsList").click(function () {
+        let id = this.id, data = JSON.stringify(res[id]);
+        window.localStorage.setItem("channelData", data);
+        window.location.replace("stream.html");
+      });
+    });
+
+}
+
+function setLast10Data(channelData) {
+  let top12Data = window.localStorage.getItem("top12Data");
+  top12Data = JSON.parse(top12Data);
+
+  let check = true;
+  if (top12Data === undefined || top12Data === null || top12Data.length === 0) {
+    top12Data = [];
+  } else {
+    for (let i = 0; i < top12Data.length; i++) {
+      if (top12Data[i].url === channelData.url) {
+        check = false;
+        break;
+      }
+    }
+  }
+  if (check === true) {
+    if (top12Data.length >= 12) {
+      settop12Data = top12Data.shift();
+    }
+    top12Data.push(channelData);
+  }
+  top12Data = JSON.stringify(top12Data);
+  window.localStorage.setItem("top12Data", top12Data);
+}
