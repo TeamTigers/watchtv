@@ -25,5 +25,6 @@ $(function(){
     window.location.replace("channelList.html");
   });
 
-  
+  // Store current location
+  history.pushState(null, null, location.href);
 });

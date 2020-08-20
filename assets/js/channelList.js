@@ -22,7 +22,12 @@ $(function() {
       showToast("Somthing problem here!!!", "red darken-3");
     });
 
- 
+  // Go Back location
+  window.onpopstate = function () {
+    window.location.replace("index.html");
+  };
+  // Store current location
+  history.pushState(null, null, location.href);
 });
 
  
