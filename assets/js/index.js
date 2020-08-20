@@ -20,7 +20,6 @@ $(function(){
   // Redirect Page With Data
   $(".commonCls").click(function () {
     let id = this.id;
-    console.log(id);
     window.localStorage.setItem("categoryName", id);
     window.location.replace("channelList.html");
   });

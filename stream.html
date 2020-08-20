@@ -20,6 +20,14 @@
       href="https://fonts.googleapis.com/css?family=Google+Sans"
       as="style"
     />
+    <script 
+      type="text/javascript" 
+      src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js">
+    </script>
+    <script 
+      type="text/javascript" 
+      src="https://cdnjs.cloudflare.com/ajax/libs/dash-shaka-playback/2.0.5/dash-shaka-playback.js">
+    </script>
 
     <!-- custom css -->
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -46,9 +54,7 @@
       <div class="container">
         <div class="section">
           <div class="center-align">
-            <video class="responsive-video" controls>
-              <source src="movie.mp4" type="video/mp4" />
-            </video>
+            <div id="player"></div>
           </div>
         </div>
         <div class="section">
