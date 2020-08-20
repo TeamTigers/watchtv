@@ -50,12 +50,16 @@ main {
   flex: 1 0 auto;
 }
 
+.main-content {
+  display: none;
+}
+
 .banner-text {
   margin-top: 4em;
 }
 
 .btn {
-  color: #37474f !important;
+  color: #263238 !important;
   background-color: #62dafc !important;
   border-radius: 7px;
   text-transform: none;
@@ -95,14 +99,21 @@ main {
   cursor: pointer;
 }
 
-.card .fix-img {
-  width: 136px;
-  height: 100px;
-}
-
 .card:hover {
   -webkit-box-shadow: 0px 3px 20px 2px #89d2f7;
           box-shadow: 0px 3px 20px 2px #89d2f7;
+}
+
+.loading-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .page-footer {
