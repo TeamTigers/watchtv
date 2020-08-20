@@ -38,7 +38,7 @@ function setRecentData() {
     str += "<div class='col s12'>";
     str += "<h4 class='mid-white'>Recently watched</h4>";
     str += "<br />";
-    for (let i = 0; i < top12Data.length; i++) {
+    for (let i = top12Data.length - 1; i >= 0; i--) {
       let imgUrl = top12Data[i].logo === "null" 
         ? "assets/img/img.jpg" : top12Data[i].logo;
       str += "<div class='col s6 m4 l3'>";
