@@ -1,4 +1,5 @@
 $(function () {
+  let categoryName = window.localStorage.getItem("categoryName");
   let channelData = window.localStorage.getItem("channelData");
   channelData = JSON.parse(channelData);
   // set last 10 data
@@ -14,8 +15,17 @@ $(function () {
     width: "90vw",
   });
 
-  // get Related channels
-  getRelatedChannels();
+  let page = 1;
+  dataLoadFromAPI(categoryName, page);
+
+  $(window).scroll(function() {
+    let height = parseInt($(window).height() + $(window).scrollTop());
+      height = Math.ceil(height);
+    if ($(document).height() === height) {
+      page += 1;
+      dataLoadFromAPI(categoryName, page);
+    }
+  });
 
   // Go Back location
   window.onpopstate = function () {
@@ -23,10 +33,9 @@ $(function () {
   };
 });
 
-function getRelatedChannels() {
-  let categoryName = window.localStorage.getItem("categoryName");
+function dataLoadFromAPI(categoryName, page) {
   let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
-  apiURL += categoryName;
+  apiURL += categoryName + "&page=" + page;
   $.get(apiURL, function () {})
     .done((res) => {
       let str = "";
@@ -43,7 +52,7 @@ function getRelatedChannels() {
         str += "<p class='flow-text truncate'>" + res[i].name + "</p>";
         str += "</div></div></div>";
       }
-      $("#streamChannelListID").html(str);
+      $("#streamChannelListID").append(str);;
 
       // set channel Data
       $(".commonClsList").click(function () {
@@ -51,8 +60,10 @@ function getRelatedChannels() {
         window.localStorage.setItem("channelData", data);
         window.location.replace("stream.html");
       });
+    })
+    .fail(function () {
+      showToast("Something went wrong!", "red darken-3");
     });
-
 }
 
 function setLast10Data(channelData) {

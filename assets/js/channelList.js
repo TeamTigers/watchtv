@@ -1,8 +1,30 @@
 $(function () {
   let categoryName = window.localStorage.getItem("categoryName");
   $("#channelNameID").html(categoryName);
+
+  let page = 1;
+  dataLoadFromAPI(categoryName, page);
+
+  $(window).scroll(function() {
+    let height = parseInt($(window).height() + $(window).scrollTop());
+      height = Math.ceil(height);
+    if ($(document).height() === height) {
+      page += 1;
+      dataLoadFromAPI(categoryName, page);
+    }
+  });
+
+  // Go Back location
+  window.onpopstate = function () {
+    window.location.replace("index.html");
+  };
+  // Store current location
+  history.pushState(null, null, location.href);
+});
+
+function dataLoadFromAPI(categoryName, page) {
   let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
-  apiURL += categoryName;
+  apiURL += categoryName + "&page=" + page;
   $.get(apiURL, function () {})
     .done((res) => {
       let str = "";
@@ -19,7 +41,7 @@ $(function () {
         str += "<p class='flow-text truncate'>" + res[i].name + "</p>";
         str += "</div></div></div>";
       }
-      $("#channelListID").html(str);
+      $("#channelListID").append(str);
 
       $(".loading-bar").hide();
       $(".main-content").fadeIn();
@@ -34,14 +56,7 @@ $(function () {
     .fail(function () {
       showToast("Something went wrong!", "red darken-3");
     });
-
-  // Go Back location
-  window.onpopstate = function () {
-    window.location.replace("index.html");
-  };
-  // Store current location
-  history.pushState(null, null, location.href);
-});
+}
 
 /*** Show Toast ***/
 function showToast(data, style) {
