@@ -1,26 +1,84 @@
-$(function(){
-  // Set Category List 
-  let data = [
-    "News", "Music", "Sport", "Movies",
-    "Entertainment", "Comedy", "Documentary", 
-    "Fashion", "History", "Kids"
+$(function () {
+  // assign compile time constants
+  const CATEGORIES = [
+    "News", "Music", "Sport", "Movies", "Entertainment", 
+    "Comedy", "Documentary", "Fashion", "History", "Kids",
   ];
-  let str = "";
-  data.forEach(el => {
-    str += "<div class='col s6 m4 l3'>";
-    str += "<div class='card commonCls' id='"+ el +"'>";
-    str += "<div class='card-content center'>";
-    str += "<span class='flow-text'>"+ el +"</span>";
-    str += "</div></div></div>";
+  const DEFAULT_IMAGE = "assets/img/img.jpg";
+
+  // instantiate run-time constants
+  const recentlyViewed = JSON.parse(window.localStorage.getItem("top12Data"));
+
+  // declare variables
+  let categoryCards = "";
+  let cachedCards = "";
+
+  // display category wise cards
+  const getCategoryCard = function (tag) {
+    return `
+      <div class='col s6 m4 l3'>
+        <div class='card commonCls' id='${tag}'>
+          <div class='card-content center'>
+            <span class='flow-text'>${tag}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  CATEGORIES.forEach((elem) => {
+    categoryCards = categoryCards.concat(getCategoryCard(elem));
   });
-  $("#categoryList").html(str);
 
-  // show recent channels list
-  setRecentData();
+  $("#categoryList").html(categoryCards);
 
-  // Redirect Page With Data
+  // display recent channels list
+
+  const setCachedCards = function () {
+    recentlyViewed.forEach(function (elem, index) {
+      cachedCards = cachedCards.concat(`
+        <div class='col s6 m4 l3'>
+          <div class='card commonClsList' id='${index}'>
+            <div class='card-content center'>
+              <img src='${
+                elem.logo === "null" ? DEFAULT_IMAGE : elem.logo
+              }' alt='channel' style='width: 136px; height: 100px' class='responsive-img fixImg'/>
+              <p class='flow-text truncate'> ${elem.name} </p>
+            </div>
+          </div>
+        </div>
+      `);
+    });
+  };
+
+  const getCachedCards = function () {
+    return `
+      <div class='section'>
+        <div class='row'>
+          <div class='col s12'>
+            <h4 class='mid-white'>Recently watched</h4><br />
+            ${cachedCards}  
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  if (recentlyViewed != null) {
+    setCachedCards();
+    $("#recent12ChannelsID").html(getCachedCards());
+
+    $(".commonClsList").click(function () {
+      const id = this.id,
+        data = JSON.stringify(recentlyViewed[id]);
+      window.localStorage.setItem("channelData", data);
+      window.location.replace("stream.html");
+    });
+  }
+
+  // redirect Page With Data
   $(".commonCls").click(function () {
-    let id = this.id;
+    const id = this.id;
     window.localStorage.setItem("categoryName", id);
     window.location.replace("channelList.html");
   });
@@ -28,38 +86,3 @@ $(function(){
   // Store current location
   history.pushState(null, null, location.href);
 });
-
-function setRecentData() {
-  let top12Data = window.localStorage.getItem("top12Data");
-    top12Data = JSON.parse(top12Data);
-  if (top12Data !== undefined && top12Data !== null && top12Data.length > 0) {
-    let str = "<div class='section'>";
-    str += "<div class='row'>";
-    str += "<div class='col s12'>";
-    str += "<h4 class='mid-white'>Recently watched</h4>";
-    str += "<br />";
-    for (let i = top12Data.length - 1; i >= 0; i--) {
-      let imgUrl = top12Data[i].logo === "null" 
-        ? "assets/img/img.jpg" : top12Data[i].logo;
-      str += "<div class='col s6 m4 l3'>";
-      str += "<div class='card commonClsList' id='" + i + "'>";
-      str += "<div class='card-content center'>";
-      str +=
-        "<img src='" +
-        imgUrl +
-        "' alt='channel' style='width: 136px; height: 100px'";
-      str += "class='responsive-img fixImg'/>";
-      str += "<p class='flow-text truncate'>" + top12Data[i].name + "</p>";
-      str += "</div></div></div>";
-    }
-    str += "</div></div></div>";
-    $("#recent12ChannelsID").html(str);
-
-    // set channel Data
-    $(".commonClsList").click(function () {
-      let id = this.id, data = JSON.stringify(top12Data[id]);
-      window.localStorage.setItem("channelData", data);
-      window.location.replace("stream.html");
-    });
-  }
-}
