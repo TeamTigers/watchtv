@@ -35,7 +35,7 @@ $(function () {
   // display recent channels list
 
   const setCachedCards = function () {
-    recentlyViewed.forEach(function (elem, index) {
+    recentlyViewed.reverse().forEach(function (elem, index) {
       cachedCards = cachedCards.concat(`
         <div class='col s6 m4 l3'>
           <div class='card commonClsList' id='${index}'>
