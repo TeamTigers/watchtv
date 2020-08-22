@@ -1,16 +1,18 @@
 $(function () {
-  let categoryName = window.localStorage.getItem("categoryName");
+  const categoryName = window.localStorage.getItem("categoryName");
   $("#channelNameID").html(categoryName);
 
   let page = 1;
-  dataLoadFromAPI(categoryName, page);
+  loadChannels(categoryName, page);
 
-  $(window).scroll(function() {
-    let height = parseInt($(window).height() + $(window).scrollTop());
-      height = Math.ceil(height);
+  $(window).scroll(function () {
+    const height = Math.ceil(
+      parseInt($(window).height() + $(window).scrollTop())
+    );
+
     if ($(document).height() === height) {
       page += 1;
-      dataLoadFromAPI(categoryName, page);
+      loadChannels(categoryName, page);
     }
   });
 
@@ -22,33 +24,46 @@ $(function () {
   history.pushState(null, null, location.href);
 });
 
-function dataLoadFromAPI(categoryName, page) {
-  let apiURL = "https://mini-js.herokuapp.com/mini/api/iptv?category=";
-  apiURL += categoryName + "&page=" + page;
-  $.get(apiURL, function () {})
-    .done((res) => {
-      let str = "";
-      for (let i = 0; i < res.length; i++) {
-        let imgUrl = res[i].logo === "null" ? "assets/img/img.jpg" : res[i].logo;
-        str += "<div class='col s6 m4 l3'>";
-        str += "<div class='card commonClsList' id='" + i + "'>";
-        str += "<div class='card-content center'>";
-        str +=
-          "<img src='" +
-          imgUrl +
-          "' alt='channel' style='width: 136px; height: 100px'";
-        str += "class='responsive-img fixImg'/>";
-        str += "<p class='flow-text truncate'>" + res[i].name + "</p>";
-        str += "</div></div></div>";
-      }
-      $("#channelListID").append(str);
+function loadChannels(category, page) {
+  const DEFAULT_IMAGE = "assets/img/img.jpg";
+  const apiUrl = `https://mini-js.herokuapp.com/mini/api/iptv?category=${category}&page=${page}`;
+  const showToast = function (data, style) {
+    M.toast({
+      html: data,
+      classes: style,
+    });
+  };
 
+  $.get(apiUrl, function () {})
+    .done((response) => {
+      let channelCards = "";
+
+      const generateChannelCards = function () {
+        response.forEach(function (element, index) {
+          channelCards = channelCards.concat(`
+            <div class='col s6 m4 l3'>
+              <div class='card commonClsList' id='${index}'>
+                <div class='card-content center'>
+                  <img src='${
+                    element.logo === "null" ? DEFAULT_IMAGE : element.logo
+                  }' alt='channel' style='width: 136px; height: 100px' class='responsive-img fixImg'/>
+                  <p class='flow-text truncate'>${element.name}</p>
+                </div>
+              </div>
+            </div>
+          `);
+        });
+      };
+
+      generateChannelCards();
+      $("#channelListID").append(channelCards);
       $(".loading-bar").hide();
       $(".main-content").fadeIn();
 
       // set channel Data
       $(".commonClsList").click(function () {
-        let id = this.id, data = JSON.stringify(res[id]);
+        let id = this.id,
+          data = JSON.stringify(response[id]);
         window.localStorage.setItem("channelData", data);
         window.location.replace("stream.html");
       });
@@ -56,12 +71,4 @@ function dataLoadFromAPI(categoryName, page) {
     .fail(function () {
       showToast("Something went wrong!", "red darken-3");
     });
-}
-
-/*** Show Toast ***/
-function showToast(data, style) {
-  M.toast({
-    html: data,
-    classes: style,
-  });
 }
